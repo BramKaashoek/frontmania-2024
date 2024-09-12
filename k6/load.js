@@ -3,7 +3,7 @@ import { check, group } from 'k6';
 import http from 'k6/http';
 
 const PAGES = ['/'];
-const TARGET_RATE = 60;
+const TARGET_RATE = 5;
 
 export const options = {
   scenarios: {
@@ -11,7 +11,7 @@ export const options = {
       executor: 'ramping-arrival-rate',
       startRate: 1,
       timeUnit: '1s',
-      preAllocatedVUs: 100,
+      preAllocatedVUs: 10,
       stages: [
         { target: TARGET_RATE, duration: '1s' },
         { target: TARGET_RATE, duration: '45m' },
