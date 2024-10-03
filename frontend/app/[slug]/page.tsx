@@ -1,45 +1,7 @@
-// import { Img } from '@/components/Img';
-// import { trace } from '@opentelemetry/api';
-
-// type Fruit = {
-//   name: string;
-//   price: number;
-//   imageUrl: string;
-//   description: string;
-// };
-
-// export default async function PDP({
-//   params: { slug },
-// }: {
-//   params: { slug: string };
-// }) {
-//   const fruit = await trace
-//     .getTracer('nextjs-example')
-//     .startActiveSpan(`fetch-fruit`, async (span) => {
-//       span.setAttribute('fruit', slug);
-//       const data = await fetch(`http://localhost:4000/fruit/${slug}`);
-//       const fruit = await data.json();
-//       span.end();
-//       return fruit as Fruit;
-//     });
-
-//   return (
-//     <>
-//       <h1>{fruit.name}</h1>
-//       <Img src={`/${fruit.imageUrl}`} alt={`picture of a ${fruit.name}`} />
-//       <span>
-//         {new Intl.NumberFormat('en-GB', {
-//           style: 'currency',
-//           currency: 'EUR',
-//         }).format(fruit.price)}
-//       </span>
-//       <button>Buy now!</button>
-//     </>
-//   );
-// }
-
-import { ClsElement } from '@/components/cls-element';
-import { Button } from '@/components/ui/button';
+import { DelayedRender } from "@/components/DelayedRender";
+import { SlowImage } from "@/components/SlowImage";
+import { ClsElement } from "@/components/cls-element";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -47,19 +9,19 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { trace } from '@opentelemetry/api';
-import { Apple, ArrowLeft, ShoppingCart, Star, Truck } from 'lucide-react';
-import Link from 'next/link';
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { trace } from "@opentelemetry/api";
+import { Apple, ArrowLeft, ShoppingCart, Star, Truck } from "lucide-react";
+import Link from "next/link";
 
 type Fruit = {
   name: string;
@@ -77,11 +39,12 @@ export default async function ProductPage({
   params: { slug: string };
 }) {
   const fruit = await trace
-    .getTracer('nextjs-example')
-    .startActiveSpan(`fetch-fruit`, async (span) => {
-      span.setAttribute('fruit', slug);
+    .getTracer("nextjs-example")
+    // biome-ignore lint/suspicious/noExplicitAny: shut up biome
+    .startActiveSpan("fetch-fruit", async (span: any) => {
+      span.setAttribute("fruit", slug);
       const data = await fetch(`http://localhost:4000/fruit/${slug}`, {
-        cache: 'no-store',
+        cache: "no-store",
       });
       const fruit = await data.json();
       span.end();
@@ -143,9 +106,11 @@ export default async function ProductPage({
             <div>
               <Card>
                 <CardContent className="p-6">
-                  <img
+                  <SlowImage
                     src={`http://localhost:4000/static/${fruit.imageUrl}`}
                     alt={fruit.name}
+                    width={500}
+                    height={500}
                     className="w-full h-auto rounded-lg"
                   />
                 </CardContent>
@@ -169,9 +134,11 @@ export default async function ProductPage({
                 <p className="text-2xl font-bold text-pink-500 mb-4">
                   {fruit.price}
                 </p>
-                {slug === 'banana' ? <ClsElement /> : undefined}
+                {slug === "banana" ? <ClsElement /> : null}
 
-                <p className="text-gray-600 mb-6">{fruit.blurb}</p>
+                <DelayedRender>
+                  <p className="text-gray-600 mb-6">{fruit.blurb}</p>
+                </DelayedRender>
               </div>
 
               <div className="space-y-4">
@@ -206,7 +173,7 @@ export default async function ProductPage({
             </div>
           </div>
 
-          {slug === 'banana' ? <ClsElement /> : undefined}
+          {slug === "banana" ? <ClsElement /> : null}
           <Tabs defaultValue="description" className="mt-12">
             <TabsList>
               <TabsTrigger value="description">Description</TabsTrigger>
@@ -253,19 +220,19 @@ export default async function ProductPage({
                   <div className="space-y-4">
                     {[
                       {
-                        name: 'Alice W.',
+                        name: "Alice W.",
                         rating: 5,
                         comment:
                           "Best apples I've ever tasted! Worth every penny.",
                       },
                       {
-                        name: 'Bob M.',
+                        name: "Bob M.",
                         rating: 4,
                         comment:
-                          'Great taste, but a bit pricey. Still, quality fruit!',
+                          "Great taste, but a bit pricey. Still, quality fruit!",
                       },
                       {
-                        name: 'Charlie D.',
+                        name: "Charlie D.",
                         rating: 5,
                         comment:
                           "These apples are life-changing. I'm never going back to regular apples.",
