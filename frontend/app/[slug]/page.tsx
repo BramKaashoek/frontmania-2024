@@ -39,6 +39,7 @@
 // }
 
 import { ClsElement } from '@/components/cls-element';
+import { DelayedRender } from '@/components/delayed-rendered';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -171,7 +172,9 @@ export default async function ProductPage({
                 </p>
                 {slug === 'banana' ? <ClsElement /> : undefined}
 
-                <p className="text-gray-600 mb-6">{fruit.blurb}</p>
+                <DelayedRender>
+                  <p className="text-gray-600 mb-6">{fruit.blurb}</p>
+                </DelayedRender>
               </div>
 
               <div className="space-y-4">

@@ -35,8 +35,8 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' }, // or 'chrome-beta'
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
     },
 
     /* Test against mobile viewports. */
