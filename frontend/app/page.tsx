@@ -1,8 +1,9 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
-import { Input } from '@/components/ui/input';
-import { trace } from '@opentelemetry/api';
+import { ClsNotification } from "@/components/ClsNotification";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
+import { Input } from "@/components/ui/input";
+import { trace } from "@opentelemetry/api";
 import {
   AlarmClock,
   Apple,
@@ -10,8 +11,8 @@ import {
   Sparkles,
   TrendingUp,
   Zap,
-} from 'lucide-react';
-import Link from 'next/link';
+} from "lucide-react";
+import Link from "next/link";
 
 type Fruit = {
   name: string;
@@ -23,10 +24,10 @@ type Fruit = {
 
 export default async function Home() {
   const fruits: Fruit[] = await trace
-    .getTracer('nextjs-example')
-    .startActiveSpan('fetch-fruits', async (span) => {
-      const data = await fetch(`http://localhost:4000/fruit`, {
-        cache: 'no-store',
+    .getTracer("nextjs-example")
+    .startActiveSpan("fetch-fruits", async (span: any) => {
+      const data = await fetch("http://localhost:4000/fruit", {
+        cache: "no-store",
       });
       const fruit = await data.json();
       span.end();
@@ -35,6 +36,8 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <ClsNotification />
+
       <header className="sticky top-0 z-50 w-full border-b bg-white">
         <div className="container flex h-16 items-center justify-between">
           <Link className="flex items-center space-x-2" href="/">
@@ -74,6 +77,7 @@ export default async function Home() {
         </div>
       </header>
 
+      <ClsNotification />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-pink-50 to-purple-50">
           <div className="container px-4 md:px-6">
@@ -126,7 +130,9 @@ export default async function Home() {
                     <h3 className="text-lg font-semibold">{fruit.name}</h3>
                   </a>
                   <p className="text-sm text-gray-500">{fruit.price}</p>
-                  <Badge variant="secondary">Limited Stock</Badge>
+                  <Badge className="bg-secondary text-secondary-foreground">
+                    Limited Stock
+                  </Badge>
                   <Button className="w-full bg-pink-500 hover:bg-pink-600 text-white">
                     Add to Cart
                   </Button>
@@ -144,22 +150,22 @@ export default async function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
               {[
                 {
-                  title: 'Trendy Fruits',
+                  title: "Trendy Fruits",
                   icon: Sparkles,
-                  description: 'Always in season, always in style',
+                  description: "Always in season, always in style",
                 },
                 {
-                  title: 'Quick Delivery',
+                  title: "Quick Delivery",
                   icon: Zap,
-                  description: 'Fruits at the speed of light',
+                  description: "Fruits at the speed of light",
                 },
                 {
-                  title: 'Freshness Guarantee',
+                  title: "Freshness Guarantee",
                   icon: TrendingUp,
                   description: "So fresh, they're practically time travelers",
                 },
                 {
-                  title: '24/7 Support',
+                  title: "24/7 Support",
                   icon: AlarmClock,
                   description: "We're here for all your fruity needs",
                 },
