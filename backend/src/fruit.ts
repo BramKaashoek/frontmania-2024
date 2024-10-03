@@ -22,7 +22,7 @@ export const fruits: { [key: string]: Fruit } = {
     name: 'Artisanal Banana',
     icon: 'Banana',
     price: '$10.00',
-    imageUrl: 'banana-large.jpg',
+    imageUrl: 'banana.jpg',
     slug: 'banana',
     blurb: `Our Artisanal Banana is a cut above the rest. Grown in the lush jungles of South America, each banana is handpicked by skilled farmers who know the secret to perfect ripeness. With its creamy texture and delicate flavor, this banana is the perfect addition to your morning smoothie or afternoon snack.`,
     description: `Our Artisanal Banana is a work of art. Grown in the rich soil of South America and ripened to perfection, this banana is the epitome of tropical luxury. Whether you're blending it into a smoothie, slicing it onto your cereal, or simply enjoying it on its own, our Artisanal Banana is sure to delight your taste buds.Don't settle for ordinary fruit - elevate your snacking experience with our Artisanal Banana. You deserve the best!`,

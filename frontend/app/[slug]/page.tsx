@@ -38,6 +38,7 @@
 //   );
 // }
 
+import { ClsElement } from '@/components/cls-element';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -47,7 +48,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Image } from '@/components/ui/image';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -143,7 +143,9 @@ export default async function ProductPage({
             <div>
               <Card>
                 <CardContent className="p-6">
-                  <Image
+                  {slug === 'banana' ? <ClsElement /> : undefined}
+
+                  <img
                     src={`http://localhost:4000/static/${fruit.imageUrl}`}
                     alt={fruit.name}
                     className="w-full h-auto rounded-lg"
@@ -169,6 +171,8 @@ export default async function ProductPage({
                 <p className="text-2xl font-bold text-pink-500 mb-4">
                   {fruit.price}
                 </p>
+                {slug === 'banana' ? <ClsElement /> : undefined}
+
                 <p className="text-gray-600 mb-6">{fruit.blurb}</p>
               </div>
 
@@ -204,6 +208,7 @@ export default async function ProductPage({
             </div>
           </div>
 
+          {slug === 'banana' ? <ClsElement /> : undefined}
           <Tabs defaultValue="description" className="mt-12">
             <TabsList>
               <TabsTrigger value="description">Description</TabsTrigger>
