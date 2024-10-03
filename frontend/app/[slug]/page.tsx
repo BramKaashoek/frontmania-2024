@@ -143,8 +143,6 @@ export default async function ProductPage({
             <div>
               <Card>
                 <CardContent className="p-6">
-                  {slug === 'banana' ? <ClsElement /> : undefined}
-
                   <img
                     src={`http://localhost:4000/static/${fruit.imageUrl}`}
                     alt={fruit.name}

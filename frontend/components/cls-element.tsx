@@ -8,5 +8,5 @@ export const ClsElement = () => {
     setLoaded(true);
   }, []);
 
-  return <div style={loaded ? { width: 100, height: 100 } : undefined} />;
+  return <div style={loaded ? { width: 100, height: 200 } : undefined} />;
 };
