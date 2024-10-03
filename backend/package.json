@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "nodemon --watch src --ext 'json,js,ts' --exec 'tsx src/index.ts'",
+    "dev": "pnpm start"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "nodemon": "^3.1.7",
+    "tsx": "^4.19.1"
+  }
+}

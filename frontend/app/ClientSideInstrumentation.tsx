@@ -4,14 +4,16 @@ import {
   HoneycombWebSDK,
   WebVitalsInstrumentation,
 } from '@honeycombio/opentelemetry-web';
+import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
 import { useEffect } from 'react';
 
 const startClientSideInstrumentation = () => {
   const sdk = new HoneycombWebSDK({
-    endpoint: 'http://localhost:4318/jaeger',
+    apiKey: process.env.NEXT_PUBLIC_HONEYCOMB_API_KEY,
     serviceName: 'next-client',
     sampleRate: 1,
     instrumentations: [
+      getWebAutoInstrumentations(),
       new WebVitalsInstrumentation({
         vitalsToTrack: ['LCP', 'CLS', 'INP', 'FCP', 'TTFB'],
       }),
