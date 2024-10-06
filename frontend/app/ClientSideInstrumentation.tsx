@@ -4,7 +4,6 @@ import {
   HoneycombWebSDK,
   WebVitalsInstrumentation,
 } from '@honeycombio/opentelemetry-web';
-import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
 import { useEffect } from 'react';
 
 const startClientSideInstrumentation = () => {
@@ -13,7 +12,6 @@ const startClientSideInstrumentation = () => {
     serviceName: 'next-client',
     sampleRate: 1,
     instrumentations: [
-      getWebAutoInstrumentations(),
       new WebVitalsInstrumentation({
         vitalsToTrack: ['LCP', 'CLS', 'INP', 'FCP', 'TTFB'],
       }),
