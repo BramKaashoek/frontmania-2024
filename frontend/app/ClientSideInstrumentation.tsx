@@ -1,19 +1,25 @@
-'use client';
+"use client";
 
 import {
   HoneycombWebSDK,
   WebVitalsInstrumentation,
-} from '@honeycombio/opentelemetry-web';
-import { useEffect } from 'react';
+} from "@honeycombio/opentelemetry-web";
+import { useEffect } from "react";
 
 const startClientSideInstrumentation = () => {
   const sdk = new HoneycombWebSDK({
     apiKey: process.env.NEXT_PUBLIC_HONEYCOMB_API_KEY,
-    serviceName: 'next-client',
+    serviceName: "next-client",
     sampleRate: 1,
     instrumentations: [
       new WebVitalsInstrumentation({
-        vitalsToTrack: ['LCP', 'CLS', 'INP', 'FCP', 'TTFB'],
+        vitalsToTrack: ["LCP", "CLS", "INP", "FCP", "TTFB"],
+        cls: {
+          reportAllChanges: true,
+          applyCustomAttributes: (attributes) => {
+            return attributes;
+          },
+        },
       }),
     ],
     skipOptionsValidation: true,
