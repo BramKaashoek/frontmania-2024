@@ -101,6 +101,14 @@ export default async function ProductPage({
               title="NFT with every lemon!"
               body="Buy one lemon, get one lemon NFT free!"
             />
+            <Notification
+              title="Almost out of stock!"
+              body="Buy now! Only 5 lemons left!"
+            />
+            <Notification
+              title="Free shipping!"
+              body="Get free shipping on all lemon orders!"
+            />
           </>
         )}
         <main className="flex-1 py-8 bg-gray-50">

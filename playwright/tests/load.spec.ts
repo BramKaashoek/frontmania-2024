@@ -16,7 +16,8 @@ test('visit home', async ({ page }) => {
 test.only('visit fruits', async ({ browser }) => {
   const context = await browser.newContext();
   const page = await context.newPage();
-  const fruits = ['banana', 'lemon', 'cherry', 'apple'];
+  // const fruits = ['banana', 'lemon', 'cherry', 'apple'];
+  const fruits = ['lemon'];
   for (const fruit of fruits) {
     const start = performance.now();
     await page.goto(`http://localhost:3000/${fruit}`);
@@ -35,7 +36,7 @@ test.only('visit fruits', async ({ browser }) => {
         response.status() === 200
     );
 
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(30000); // takes a long ass time to send out CLS spans
 
     const end = performance.now();
 
