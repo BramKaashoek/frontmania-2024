@@ -52,7 +52,7 @@ const fruit = await trace
 - add backend tracing
 
 ```javascript
-// src/otel.ts
+// src/index.ts
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 
@@ -79,24 +79,25 @@ require('.');
 - explain how core web vitals affect page ranking in google
 - explain core web vitals
 - add core web vital instrumentation
+
 ```javascript
 // frontend/app/ClientSideInstrumentation.tsx
-"use client";
+'use client';
 
 import {
   HoneycombWebSDK,
   WebVitalsInstrumentation,
-} from "@honeycombio/opentelemetry-web";
-import { useEffect } from "react";
+} from '@honeycombio/opentelemetry-web';
+import { useEffect } from 'react';
 
 const startClientSideInstrumentation = () => {
   const sdk = new HoneycombWebSDK({
     apiKey: process.env.NEXT_PUBLIC_HONEYCOMB_API_KEY,
-    serviceName: "next-client",
+    serviceName: 'next-client',
     sampleRate: 1,
     instrumentations: [
       new WebVitalsInstrumentation({
-        vitalsToTrack: ["LCP", "CLS", "INP", "FCP", "TTFB"],
+        vitalsToTrack: ['LCP', 'CLS', 'INP', 'FCP', 'TTFB'],
         cls: {
           reportAllChanges: true,
           applyCustomAttributes: (attributes) => {
@@ -121,8 +122,10 @@ export const ClientSideInstrumentation = () => {
   }, []);
   return null;
 };
-
 ```
+
+- add ClientSideInstrumentatin to layout above children
+
 - send traces to honeycomb
 
 ```javascript

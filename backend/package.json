@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon --watch src --ext 'json,js,ts' --exec 'tsx --env-file=.env src/otel.ts'",
+    "start": "nodemon --watch src --ext 'json,js,ts' --exec 'tsx --env-file=.env src/index.ts'",
     "dev": "pnpm start"
   },
   "dependencies": {

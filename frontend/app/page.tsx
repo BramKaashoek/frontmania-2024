@@ -2,7 +2,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Input } from '@/components/ui/input';
-import { trace } from '@opentelemetry/api';
 import {
   AlarmClock,
   Apple,
@@ -22,16 +21,10 @@ type Fruit = {
 };
 
 export default async function Home() {
-  const fruits: Fruit[] = await trace
-    .getTracer('nextjs-example')
-    .startActiveSpan('fetch-fruits', async (span) => {
-      const data = await fetch(`http://localhost:4000/fruit`, {
-        cache: 'no-store',
-      });
-      const fruit = await data.json();
-      span.end();
-      return fruit;
-    });
+  const data = await fetch(`http://localhost:4000/fruit`, {
+    cache: 'no-store',
+  });
+  const fruits: Fruit[] = await data.json();
 
   return (
     <div className="min-h-screen flex flex-col">

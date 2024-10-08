@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/select';
 import { SlowImage } from '@/components/ui/slow-image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { trace } from '@opentelemetry/api';
 import { Apple, ArrowLeft, ShoppingCart, Star, Truck } from 'lucide-react';
 import Link from 'next/link';
 
@@ -38,17 +37,10 @@ export default async function ProductPage({
 }: {
   params: { slug: string };
 }) {
-  const fruit = await trace
-    .getTracer('nextjs-example')
-    .startActiveSpan(`fetch-fruit`, async (span) => {
-      span.setAttribute('fruit', slug);
-      const data = await fetch(`http://localhost:4000/fruit/${slug}`, {
-        cache: 'no-store',
-      });
-      const fruit = await data.json();
-      span.end();
-      return fruit as Fruit;
-    });
+  const data = await fetch(`http://localhost:4000/fruit/${slug}`, {
+    cache: 'no-store',
+  });
+  const fruit: Fruit = await data.json();
 
   return (
     <>
