@@ -116,7 +116,7 @@ export default async function ProductPage({
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <Card>
-                  <CardContent className="p-6">
+                  <CardContent className="product-image">
                     {slug === 'banana' ? (
                       <SlowImage
                         src={`http://localhost:4000/static/${fruit.imageUrl}`}

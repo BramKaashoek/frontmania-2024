@@ -1,18 +1,62 @@
 # demo
 
+## prep
+
+### terminal
+
+- pane with fe
+- pane with backend
+- pane with k6
+- pane with jaeger
+
+```sh
+docker run --rm --name jaeger \
+  -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
+  -p 6831:6831/udp \
+  -p 6832:6832/udp \
+  -p 5778:5778 \
+  -p 16686:16686 \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  -p 14250:14250 \
+  -p 14268:14268 \
+  -p 14269:14269 \
+  -p 9411:9411 \
+  jaegertracing/all-in-one
+```
+
+### browser
+
+- tab with frontend
+- tab with jaeger
+- tab with honeycomb
+
+### stage
+
+- pointer
+- bottle on the floor
+
+## otel lines
+
+Otel is a suite of tools/standards and SDK's that enables developers to monitor their projects​
+
+OpenTelemetry tracks a series of events (trace) and produces details about each event (span)
+
 ## introduce app
 
 - fruitle, sell fruits
 - home page and PDP
+- (slide) there is a frontend and a backend
 - i'm a frontend dev
-- there is a backend which supplies some data
 
 ## first issue (slow fetch)
 
 - show sales guy slide
 - state that its impossible to tell what causes the issues right now
 - state that we've all been there and started clicking through the site to find issues
+- show otel FE slide
 - add otel
+- explain what @vercel/otel does
 
 ```javascript
 // src/instrumentation.ts
@@ -25,27 +69,9 @@ export async function register() {
 }
 ```
 
-- run k6
+- restart frontend
 - open jaeger
 - look into a slow trace
-- add span around fetch
-
-```javascript
-// src/app/[slug]/page.tsx
-const fruit = await trace
-.getTracer('nextjs-example')
-.startActiveSpan(`fetch-fruit`, async (span) => {
-    span.setAttribute('fruit', slug);
-    const data = await fetch(`http://localhost:4000/fruit/${slug}`, {
-    cache: 'no-store',
-    });
-    const fruit = await data.json();
-    span.end();
-    return fruit as Fruit;
-});
-
-```
-
 - look into span
 - call backender
 - put on backend hat
@@ -66,112 +92,46 @@ sdk.start();
 require('.');
 ```
 
-- fix the sleep
+- add span around db call
+
+```javascript
+// src/routes/fruit.ts
+import { trace } from '@opentelemetry/api';
+// ...
+const fruit = await trace
+  .getTracer('express-api')
+  .startActiveSpan(`db-get-fruit`, async (span) => {
+    span.setAttribute('fruit', slug);
+    const fruit = await db.getFruit(slug);
+    span.end();
+    return fruit;
+  });
+```
+
+- show the sleep
 - show traces in jaeger
+- bring back the sleep
+- show jaeger again
 - take off backend hat
-- show slide with rest header
 - close up first issue by making a reference to the sales guy
+
+## intermezzo: honeycomb
+
+- send traces to honeycomb
+- introduce honeycomb
+- copy files over from honeycomb folders
+- introduce querying / binning (use slide)
+- show cherry example in honeycomb (VISUALIZE AVG(duratiom ms), WHERE(http.url exists), GROUPBY (http.url))
 
 ## second issue (bad LCP)
 
-- show slide
 - (have someone in audience run playwright)
+- show sales guy slide
 - explain how core web vitals affect page ranking in google
 - explain core web vitals
-- add core web vital instrumentation
-
-```javascript
-// frontend/app/ClientSideInstrumentation.tsx
-'use client';
-
-import {
-  HoneycombWebSDK,
-  WebVitalsInstrumentation,
-} from '@honeycombio/opentelemetry-web';
-import { useEffect } from 'react';
-
-const startClientSideInstrumentation = () => {
-  const sdk = new HoneycombWebSDK({
-    apiKey: process.env.NEXT_PUBLIC_HONEYCOMB_API_KEY,
-    serviceName: 'next-client',
-    sampleRate: 1,
-    instrumentations: [
-      new WebVitalsInstrumentation({
-        vitalsToTrack: ['LCP', 'CLS', 'INP', 'FCP', 'TTFB'],
-        cls: {
-          reportAllChanges: true,
-          applyCustomAttributes: (attributes) => {
-            return attributes;
-          },
-        },
-      }),
-    ],
-    skipOptionsValidation: true,
-  });
-
-  sdk.start();
-  return sdk;
-};
-
-export const ClientSideInstrumentation = () => {
-  useEffect(() => {
-    const sdk = startClientSideInstrumentation();
-    return () => {
-      sdk?.shutdown();
-    };
-  }, []);
-  return null;
-};
-```
-
-- add ClientSideInstrumentatin to layout above children
-
-- send traces to honeycomb
-
-```javascript
-// frontend/instrumentation.ts
-import { registerOTel } from '@vercel/otel';
-
-process.env.OTEL_EXPORTER_OTLP_ENDPOINT = 'https://api.honeycomb.io';
-process.env.OTEL_EXPORTER_OTLP_HEADERS = `x-honeycomb-team=${process.env.NEXT_PUBLIC_HONEYCOMB_API_KEY}`;
-
-export async function register() {
-  registerOTel({
-    serviceName: 'next-server',
-  });
-}
-```
-
-```javascript
-// backend/src/otel.ts
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { NodeSDK } from '@opentelemetry/sdk-node';
-
-const exporterOptions = {
-  url: 'https://api.honeycomb.io/v1/traces',
-  headers: {
-    'X-Honeycomb-Team': process.env.HONEYCOMB_API_KEY,
-  },
-};
-
-const traceExporter = new OTLPTraceExporter(exporterOptions);
-const sdk = new NodeSDK({
-  traceExporter,
-  instrumentations: [getNodeAutoInstrumentations()],
-  serviceName: 'express-api',
-});
-
-sdk.start();
-
-require('.');
-```
-
-- introduce honeycomb
-- introduce querying / binning (use slide)
-- explore new traces a little bit
+- show core web vitals instrumentation component
+- add core web vital instrumentation component to layout component
 - do the query for LCP
-- show the slow image on PDP
 - do not use slow image for LCP
 - show fixed LCP in honeycomb
 

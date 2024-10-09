@@ -1,4 +1,4 @@
-type Fruit = {
+export type Fruit = {
   name: string;
   price: string;
   imageUrl: string;
@@ -7,6 +7,9 @@ type Fruit = {
   blurb: string;
   description: string;
 };
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fruits: { [key: string]: Fruit } = {
   apple: {

@@ -2,7 +2,7 @@ import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import { check, group } from 'k6';
 import http from 'k6/http';
 
-const PAGES = ['/', , '/banana', '/apple'];
+const PAGES = ['/', , '/banana', '/apple', '/cherry'];
 const TARGET_RATE = 5;
 
 export const options = {

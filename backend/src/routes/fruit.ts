@@ -1,24 +1,30 @@
+import { trace } from '@opentelemetry/api';
 import { Router } from 'express';
-import { fruits } from '../fruit';
-
+import db from '../db';
 const router = new Router();
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 router.get('/fruit', async (_req, res) => {
   console.log('GET /fruit');
 
-  return res.status(200).json(Object.values(fruits));
+  const fruits = await db.getFruits();
+
+  return res.status(200).json(fruits);
 });
 
 router.get('/fruit/:slug', async (req, res) => {
   const { slug } = req.params;
   console.log(`GET /fruit/${slug}`);
 
-  if (slug === 'cherry') {
-    await sleep(Math.random() * 1000);
-  }
+  const fruit = await trace
+    .getTracer('express-api')
+    .startActiveSpan(`db-get-fruit`, async (span) => {
+      span.setAttribute('fruit', slug);
+      const fruit = await db.getFruit(slug);
 
-  const fruit = fruits[slug];
+      span.end();
+      return fruit;
+    });
+
   if (!fruit) return res.status(404).json({ error: 'Fruit not found' });
   return res.status(200).json(fruit);
 });
