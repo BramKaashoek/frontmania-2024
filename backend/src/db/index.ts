@@ -1,4 +1,4 @@
-import { Fruit, fruits, sleep } from './helpers';
+import { type Fruit, fruits, sleep } from "./helpers";
 
 const db = {
   getFruits: async (): Promise<Fruit[]> => {

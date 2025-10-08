@@ -27,8 +27,8 @@ docker run --rm --name jaeger \
 
 ### browser
 
-- tab with frontend
-- tab with jaeger
+- tab with frontend http://localhost:3000/
+- tab with jaeger http://localhost:16686/search
 - tab with honeycomb
 
 ### stage
@@ -89,7 +89,7 @@ const sdk = new NodeSDK({
 
 sdk.start();
 
-require('.');
+require('./server.ts');
 ```
 
 - add span around db call
