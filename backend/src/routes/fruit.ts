@@ -8,6 +8,15 @@ router.get("/fruit", async (_req, res) => {
 
   const fruits = await db.getFruits();
 
+  // const fruit = await trace
+  //   .getTracer('express-api')
+  //   .startActiveSpan(`db-get-fruit`, async (span) => {
+  //     span.setAttribute('fruit', slug);
+  //     const fruit = await db.getFruit(slug);
+  //     span.end();
+  //     return fruit;
+  //   });
+
   return res.status(200).json(fruits);
 });
 
